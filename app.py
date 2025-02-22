@@ -9,7 +9,6 @@ from flask import (
     abort,
 )
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 import os
 
 app = Flask(__name__)
@@ -20,10 +19,7 @@ sqlite_uri = f"sqlite:///{os.path.abspath(os.path.curdir)}/{db_name}"
 app.config["SQLALCHEMY_DATABASE_URI"] = sqlite_uri
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
-# We learned this from chatGPT. We were trying to update our db with the creditcard number
-# but it was not working because the db had already been created.
-# This migration stuff allowed us to update the db.
-migrate = Migrate(app, db)
+
 from models import User, Item
 
 with app.app_context():
