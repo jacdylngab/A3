@@ -17,6 +17,7 @@ class User(db.Model):
     realname = db.Column(db.String(200), unique=False, nullable=False)
     email = db.Column(db.String(120), unique=False, nullable=False)
     mailingaddress = db.Column(db.String(200), unique=False, nullable=False)
+    creditcard = db.Column(db.String(20), unique=False, nullable=True)
     password = db.Column(db.String(200), unique=False, nullable=False)
 
     def __repr__(self):

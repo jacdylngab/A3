@@ -9,6 +9,7 @@ from flask import (
     abort,
 )
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 import os
 
 app = Flask(__name__)
@@ -19,7 +20,10 @@ sqlite_uri = f"sqlite:///{os.path.abspath(os.path.curdir)}/{db_name}"
 app.config["SQLALCHEMY_DATABASE_URI"] = sqlite_uri
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
-
+# We learned this from chatGPT. We were trying to update our db with the creditcard number
+# but it was not working because the db had already been created.
+# This migration stuff allowed us to update the db.
+migrate = Migrate(app, db)
 from models import User, Item
 
 with app.app_context():
@@ -56,6 +60,7 @@ def create_user():
     realname = request.form["realname"]
     email = request.form["email"]
     mailingaddress = request.form["mailingaddress"]
+    creditcard = request.form["creditcard"]
     password = request.form["password"]
 
     existing_user = User.query.filter_by(username=username).first()
@@ -67,6 +72,7 @@ def create_user():
         realname=realname,
         email=email,
         mailingaddress=mailingaddress,
+        creditcard=creditcard,
         password=password,
     )
 
@@ -156,29 +162,3 @@ def show_user_detail():
         return render_template("show_user.html", user=user)
     else:
         return f"There is no user named {username}."
-
-
-@app.route("/admin/", methods=["GET"])
-def item_form():
-    username = session["username"]
-
-    # If it is the admin. They can add items to the database
-    if username == "ngabjac":
-        return render_template("save_item.html")
-
-    else:
-        return "You do not have access to this page."
-
-
-@app.route("/admin/", methods=["POST"])
-def save_item():
-    name = request.form["name"]
-    description = request.form["description"]
-    price = request.form["price"]
-    image = request.form["img"]
-
-    new_item = Item(name=name, description=description, price=price, prod_image=image)
-
-    db.session.add(new_item)
-    db.session.commit()
-    return redirect(url_for("show_items"))
