@@ -8,13 +8,27 @@
 # > db.session.commit()
 # > User.query.all()
 
-from app import db                                                        
+from app import db
 
-# Example class
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
+    realname = db.Column(db.String(200), unique=False, nullable=False)
     email = db.Column(db.String(120), unique=False, nullable=False)
+    mailingaddress = db.Column(db.String(200), unique=False, nullable=False)
+    password = db.Column(db.String(200), unique=False, nullable=False)
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return "<User %r>" % self.username
+
+
+class Item(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200), unique=False, nullable=False)
+    description = db.Column(db.String(200), unique=False, nullable=False)
+    price = db.Column(db.Float, unique=False, nullable=False)
+    prod_image = db.Column(db.String(200), unique=False, nullable=False)
+
+    def __repr__(self):
+        return f"Product Name: {self.name}, Product Description: {self.description}, Product Price: {self.price}"

@@ -1,0 +1,24 @@
+{% from "user_macros.html" import user_head %}
+
+<!doctype html>
+<html>
+  <head>
+    {{user_head("Login")}}
+  </head>
+
+  <body>
+    <h1>CONGO</h1>
+    <h2>Login</h2>
+
+    Don't have an account? Sign up
+    <a href="{{ url_for('register_form') }}">here</a>
+    {% if message %}
+    <p style="color: red">{{ message }}</p>
+    {% endif %}
+    <form method="POST" action="{{ url_for('do_login') }}">
+      Username: <input name="username" type="text" /><br />
+      Password: <input name="password" type="password" /><br />
+      <input type="submit" value="Login" />
+    </form>
+  </body>
+</html>

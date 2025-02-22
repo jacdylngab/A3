@@ -1,0 +1,22 @@
+{% from "user_macros.html" import user_head, menu_buttons %}
+
+<!doctype html>
+<html>
+  <head>
+    {{user_head("User Information for " + user.username)}} {{menu_buttons()}}
+  </head>
+
+  <body>
+    <h1>CONGO</h1>
+
+    <h2>User Information</h2>
+
+    <strong>Username:</strong> <span class="item-info">{{user.username}}</span
+    ><br />
+    <strong>Real name:</strong> <span class="item-info">{{user.realname}}</span
+    ><br />
+    <strong>Email:</strong> <span class="item-info">{{user.email}}</span><br />
+    <strong>Mailing Address: </strong>
+    <span class="item-info">{{user.mailingaddress}}</span>
+  </body>
+</html>

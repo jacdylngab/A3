@@ -1,0 +1,18 @@
+{% from "user_macros.html" import user_head, menu_buttons %}
+
+<!doctype html>
+<html>
+  <head>
+    {{user_head("All Items")}} {{menu_buttons()}}
+  </head>
+
+  <body>
+    <h1>CONGO</h1>
+    <h2>All Items available for purchase</h2>
+
+    {% for item in items %}
+    <img src="/static/img/{{ item.prod_image }}" /><br />
+    <a href="/items/{{item.id}}/">{{ item.name }}</a><br />
+    {% endfor %}
+  </body>
+</html>

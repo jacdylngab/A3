@@ -1,0 +1,24 @@
+{% from "user_macros.html" import user_head %}
+
+<!doctype html>
+<html>
+  <head>
+    {{user_head("Register")}}
+  </head>
+
+  <body>
+    <h1>CONGO</h1>
+    <h2>Register a New User</h2>
+    {% if message %}
+    <p style="color: red">{{ message }}</p>
+    {% endif %}
+    <form action="{{ url_for('create_user') }}" method="POST">
+      Username: <input name="username" type="text" /><br />
+      Real Name: <input name="realname" type="text" /><br />
+      Email: <input name="email" type="email" /><br />
+      Mailing Address: <input name="mailingaddress" type="text" /><br />
+      Password: <input name="password" type="password" /><br />
+      <input type="submit" value="Register" />
+    </form>
+  </body>
+</html>

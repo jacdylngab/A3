@@ -14,13 +14,13 @@ import os
 app = Flask(__name__)
 app.secret_key = "REPLACE_ME_WITH_RANDOM_CHARACTERS"
 
-db_name = "A3.db"
+db_name = "A2.db"
 sqlite_uri = f"sqlite:///{os.path.abspath(os.path.curdir)}/{db_name}"
 app.config["SQLALCHEMY_DATABASE_URI"] = sqlite_uri
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
-from models import User
+from models import User, Item
 
 with app.app_context():
     db.create_all()
@@ -28,74 +28,131 @@ with app.app_context():
 
 @app.before_request
 def check_login():
+    if (
+        request.path == url_for("register_form")
+        or request.path == url_for("login_form")
+        or request.path == url_for("create_user")
+        or request.path.startswith("/static/")
+    ):
+        pass
 
-@app.route('/')
+    elif "username" not in session:
+        return redirect(url_for("login_form"))
+
+
+@app.route("/")
 def index():
-    return 'Results of GET /'
+    return redirect(url_for("show_items"))
 
-# Show login form
-@app.route('/login', methods=['GET'])
-def login_form():
-    return 'Show login form'
 
-# Process login form submission
-@app.route('/login', methods=['POST'])
-def login():
-    return 'Process login'
-
-# Show registration form
-@app.route('/register', methods=['GET'])
+@app.route("/register/", methods=["GET"])
 def register_form():
-    return 'Show registration form'
+    return render_template("register_form.html")
 
-# Process registration form submission
-@app.route('/register', methods=['POST'])
-def register():
-    return 'Process registration'
 
-# Display items summary page
-@app.route('/items', methods=['GET'])
-def items_summary():
-    return 'Display items summary'
+@app.route("/register/", methods=["POST"])
+def create_user():
+    username = request.form["username"]
+    realname = request.form["realname"]
+    email = request.form["email"]
+    mailingaddress = request.form["mailingaddress"]
+    password = request.form["password"]
 
-# Show item details page
-@app.route('/item/<int:item_id>', methods=['GET'])
-def item_detail(item_id):
-    return f'Show item details for item {item_id}'
+    existing_user = User.query.filter_by(username=username).first()
 
-# Add item to the cart and redirect to cart
-@app.route('/cart/add/<int:item_id>', methods=['POST'])
-def add_to_cart(item_id):
-    return f'Add item {item_id} to cart'
+    if existing_user:
+        return render_template("register_form.html", message="user already exists")
+    new_user = User(
+        username=username,
+        realname=realname,
+        email=email,
+        mailingaddress=mailingaddress,
+        password=password,
+    )
 
-# Show shopping cart
-@app.route('/cart', methods=['GET'])
-def cart():
-    return 'Show shopping cart'
+    db.session.add(new_user)
+    db.session.commit()
 
-# Remove an item from the cart
-@app.route('/cart/delete/<int:item_id>', methods=['POST'])
-def delete_from_cart(item_id):
-    return f'Remove item {item_id} from cart'
+    return redirect(url_for("login_form"))
 
-# Show checkout page
-@app.route('/checkout', methods=['GET'])
-def checkout():
-    return 'Show checkout page'
 
-# Process order and confirm purchase
-@app.route('/checkout', methods=['POST'])
-def process_checkout():
-    return 'Process checkout'
+@app.route("/login/", methods=["GET"])
+def login_form():
+    return render_template("login_form.html")
 
-# Secret route displaying all orders
-@app.route('/orders/', methods=['GET'])
-def view_orders():
-    return 'Show all orders'
 
-# Log out the user and clear session
-@app.route('/logout', methods=['GET', 'POST'])
+@app.route("/login/", methods=["POST"])
+def do_login():
+    username = request.form["username"]
+    password = request.form["password"]
+    users = User.query.all()
+    login = False
+    for user in users:
+        if user.username == username and user.password == password:
+            session["username"] = username
+            login = True
+            break
+
+    if login:
+        return redirect(url_for("show_items"))
+
+    else:
+        return render_template("login_form.html", message="Wrong username/password")
+
+
+@app.route("/items/", methods=["GET"])
+def show_items():
+    return render_template("show_items.html", items=Item.query.all())
+
+
+@app.route("/items/<itemid>/", methods=["GET"])
+def show_item_detail(itemid):
+    item = Item.query.get(itemid)
+    if item:
+        return render_template("show_item.html", item=item)
+    else:
+        return "The item you are looking for is not available"
+
+
+@app.route("/admin/", methods=["GET"])
+def item_form():
+    username = session["username"]
+
+    # If it is the admin. They can add items to the database
+    if username == "ngabjac":
+        return render_template("save_item.html")
+
+    else:
+        return "You do not have access to this page."
+
+
+@app.route("/logout/", methods=["GET"])
 def logout():
-    return 'Log out user'
+    if "cart" in session:
+        del session["cart"]
+    del session["username"]
+    return render_template("login_form.html", message="You have been logged out!")
 
 
+@app.route("/user-info/", methods=["GET"])
+def show_user_detail():
+    username = session["username"]
+    user = User.query.filter_by(username=username).first()
+    if user:
+        return render_template("show_user.html", user=user)
+    else:
+        return f"There is no user named {username}."
+
+
+@app.route("/admin/", methods=["POST"])
+def save_item():
+    name = request.form["name"]
+    description = request.form["description"]
+    price = request.form["price"]
+    image = request.form["img"]
+
+    new_item = Item(name=name, description=description, price=price, prod_image=image)
+
+    db.session.add(new_item)
+    db.session.commit()
+    return redirect(url_for("show_items"))

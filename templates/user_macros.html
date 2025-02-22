@@ -1,0 +1,27 @@
+{% macro user_head(page_name) %}
+<title>Congo - {{page_name}}</title>
+<link href="{{url_for('static', filename='css/site.css')}}" rel="stylesheet" />
+{% endmacro %} {% macro menu_buttons() %}
+<button type="button" value="Home" onclick="window.location.href='/'">
+  Home
+</button>
+<button type="button" value="Cart" onclick="window.location.href='/cart/'">
+  Cart
+</button>
+<button type="button" value="User" onclick="window.location.href='/user-info/'">
+  {{ session["username"] }}
+</button>
+<button type="button" value="Logout" onclick="window.location.href='/logout/'">
+  Logout
+</button>
+
+<!-- If it is the admin. They can add items to the database -->
+{% if session['username'] == 'ngabjac' %}
+<button
+  type="button"
+  value="Save_Item"
+  onclick="window.location.href='/admin/'"
+>
+  Save Item
+</button>
+{% endif %} {% endmacro %}
