@@ -114,16 +114,30 @@ def show_item_detail(itemid):
         return "The item you are looking for is not available"
 
 
-@app.route("/admin/", methods=["GET"])
-def item_form():
-    username = session["username"]
+@app.route("/cart/", methods=["POST"])
+def add_item_to_cart():
+    cart = session.get("cart", {})
 
-    # If it is the admin. They can add items to the database
-    if username == "ngabjac":
-        return render_template("save_item.html")
+    # Get the item ID and use it to get the item name
+    item_id = request.form["item"]
 
-    else:
-        return "You do not have access to this page."
+    item = Item.query.filter_by(id=item_id).first()
+
+    item_name = item.name
+
+    cart[item_name] = cart.get(item_name, 0) + 1
+
+    # Save the session
+    session["cart"] = cart
+
+    return redirect(url_for("show_cart"))
+
+
+@app.route("/cart/", methods=["GET"])
+def show_cart():
+    cart = session.get("cart", {})
+
+    return render_template("show_cart.html", cart=cart)
 
 
 @app.route("/logout/", methods=["GET"])
@@ -142,6 +156,18 @@ def show_user_detail():
         return render_template("show_user.html", user=user)
     else:
         return f"There is no user named {username}."
+
+
+@app.route("/admin/", methods=["GET"])
+def item_form():
+    username = session["username"]
+
+    # If it is the admin. They can add items to the database
+    if username == "ngabjac":
+        return render_template("save_item.html")
+
+    else:
+        return "You do not have access to this page."
 
 
 @app.route("/admin/", methods=["POST"])
