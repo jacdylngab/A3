@@ -14,14 +14,4 @@
 <button type="button" value="Logout" onclick="window.location.href='/logout/'">
   Logout
 </button>
-
-<!-- If it is the admin. They can add items to the database -->
-{% if session['username'] == 'ngabjac' %}
-<button
-  type="button"
-  value="Save_Item"
-  onclick="window.location.href='/admin/'"
->
-  Save Item
-</button>
-{% endif %} {% endmacro %}
+{% endmacro %}

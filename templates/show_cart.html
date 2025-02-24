@@ -10,10 +10,8 @@
     <h1>CONGO</h1>
     <h2>Shopping Cart</h2>
 
-    {% for item, quantity in cart.items() %}
-    <span class="item-info">{{ item }}.</span><br />
-    <strong>quantity:</strong> <span class="item-info">{{ quantity }}</span
-    ><br />
+    {% for item, quantity in cart.items() %} {{ item }}.<br />
+    <strong>quantity:</strong> {{ quantity }}<br />
     {% endfor %}
   </body>
 </html>

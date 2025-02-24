@@ -11,11 +11,10 @@
 
     <h2>Item Information</h2>
     <img src="/static/img/{{ item.prod_image }}" /><br />
-    <strong>Item:</strong> <span class="item-info">{{ item.name }}</span><br />
+    <strong>Item:</strong> {{ item.name }}<br />
     <strong>Description:</strong>
-    <span class="item-info">{{ item.description }}</span><br />
-    <strong>Price:</strong> <span class="item-info">${{ item.price }}</span
-    ><br />
+    {{ item.description }}<br />
+    <strong>Price:</strong> ${{ item.price }}<br />
     <form method="POST" action="{{ url_for('add_item_to_cart') }}">
       <input name="item" type="hidden" value="{{ item.id }}" />
       <input type="submit" value="Add to cart" />
