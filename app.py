@@ -125,12 +125,20 @@ def add_item_to_cart():
 
     item = Item.query.filter_by(id=item_id).first()
 
-    item_name = item.name
+    # If the item exists, we can go ahead and add it to the cart
+    if item:
+        item_name = item.name
+        item_price = item.price
 
-    cart[item_name] = cart.get(item_name, 0) + 1
+        if item_name in cart:
+            cart[item_name]["quantity"] += 1
+
+        else:
+            cart[item_name] = {"quantity": 1, "price": item_price}
 
     # Save the session
     session["cart"] = cart
+    print(f"Cart: {cart}")
 
     return redirect(url_for("show_cart"))
 
@@ -138,8 +146,14 @@ def add_item_to_cart():
 @app.route("/cart/", methods=["GET"])
 def show_cart():
     cart = session.get("cart", {})
+    total = 0
+    if cart:
+        for details in cart.values():
+            total += round(
+                details["price"] * details["quantity"], 2
+            )  # Round up to two decimal places
 
-    return render_template("show_cart.html", cart=cart)
+    return render_template("show_cart.html", cart=cart, total=total)
 
 
 @app.route("/logout/", methods=["GET"])
@@ -158,3 +172,26 @@ def show_user_detail():
         return render_template("show_user.html", user=user)
     else:
         return f"There is no user named {username}."
+
+
+@app.route("/cart-delete/", methods=["POST"])
+def remove_item_from_cart():
+    cart = session.get("cart", {})
+
+    item_name = request.form["item-name"]
+
+    # If the item_name exists
+    # Remove the item from the cart based on the item_name.
+    # Fist check if the cart is empty or not. Only remove the item if the cart is not empty.
+    if item_name and cart:
+        del cart[item_name]
+
+    # Save the session
+    session["cart"] = cart
+
+    return redirect(url_for("show_cart"))
+
+
+@app.route("/checkout/", methods=["GET"])
+def checkout_page():
+    return "IMPLEMENT ME!! I AM THE CHECKOUT PAGE!"

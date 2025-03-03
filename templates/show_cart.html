@@ -10,8 +10,17 @@
     <h1>CONGO</h1>
     <h2>Shopping Cart</h2>
 
-    {% for item, quantity in cart.items() %} {{ item }}.<br />
-    <strong>quantity:</strong> {{ quantity }}<br />
+    {% for item, details in cart.items() %} {{ item }} -
+    <strong>Quantity:</strong> {{ details.quantity }}
+
+    <form method="POST" action="{{ url_for('remove_item_from_cart') }}">
+      <input name="item-name" type="hidden" value="{{ item }}" />
+      <input type="submit" value="Delete" />
+    </form>
     {% endfor %}
+    <a href="/">Continue Shopping</a><br />
+    <a href="/checkout/">Checkout</a><br />
+
+    <h3>Total = {{ total }}</h3>
   </body>
 </html>
