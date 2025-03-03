@@ -138,7 +138,6 @@ def add_item_to_cart():
 
     # Save the session
     session["cart"] = cart
-    print(f"Cart: {cart}")
 
     return redirect(url_for("show_cart"))
 
