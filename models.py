@@ -9,6 +9,7 @@
 # > User.query.all()
 
 from app import db
+from sqlalchemy import JSON
 
 
 class User(db.Model):
@@ -33,3 +34,11 @@ class Item(db.Model):
 
     def __repr__(self):
         return f"Product Name: {self.name}, Product Description: {self.description}, Product Price: {self.price}"
+
+
+class Order(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=False, nullable=False)
+    realname = db.Column(db.String(200), unique=False, nullable=False)
+    mailingaddress = db.Column(db.String(200), unique=False, nullable=False)
+    cart = db.Column(JSON, nullable=False)

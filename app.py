@@ -10,6 +10,7 @@ from flask import (
 )
 from flask_sqlalchemy import SQLAlchemy
 import os
+from collections import defaultdict
 
 app = Flask(__name__)
 app.secret_key = "REPLACE_ME_WITH_RANDOM_CHARACTERS"
@@ -20,7 +21,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = sqlite_uri
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
-from models import User, Item
+from models import User, Item, Order
 
 with app.app_context():
     db.create_all()
@@ -31,6 +32,7 @@ def check_login():
     if (
         request.path == url_for("register_form")
         or request.path == url_for("login_form")
+        or request.path == url_for("orders")
         or request.path == url_for("create_user")
         or request.path.startswith("/static/")
     ):
@@ -148,9 +150,9 @@ def show_cart():
     total = 0
     if cart:
         for details in cart.values():
-            total += round(
-                details["price"] * details["quantity"], 2
-            )  # Round up to two decimal places
+            total += details["price"] * details["quantity"]
+
+        total = round(total, 2)  # Round to two decimal places
 
     return render_template("show_cart.html", cart=cart, total=total)
 
@@ -190,30 +192,57 @@ def remove_item_from_cart():
 
     return redirect(url_for("show_cart"))
 
+
 @app.route("/checkout/", methods=["GET"])
 def show_checkout():
-
     cart = session.get("cart", {})
     user = User.query.filter_by(username=session["username"]).first()
     total_price = 0
     if cart:
-        total_price = sum(details["price"] * details["quantity"] for details in cart.values())
+        total_price = sum(
+            details["price"] * details["quantity"] for details in cart.values()
+        )
 
-        # Store checkout details in session
-        session["orders"] = {
-            "realname": user.realname,
-            "mailingaddress": user.mailingaddress,
-            "cart": cart,
-        }
-        session["cart"] = {}
-        return render_template("checkout.html", cart=cart, total=round(total_price, 2), user=user)
+        return render_template(
+            "checkout.html",
+            cart=cart,
+            total=round(total_price, 2),
+            user=user,
+        )
     else:
         return render_template("cart_empty.html")
+
+
 @app.route("/checkout/", methods=["POST"])
-
-
 def complete_checkout():
-    #if "username" not in session:
-     #return redirect(url_for("login_form"))
+    cart = session.get("cart", {})
+    user = User.query.filter_by(username=session["username"]).first()
 
-    return render_template("order_confirmation.html")
+    if cart and user:
+        # Store checkout details in the orders table in the DB
+        new_order = Order(
+            username=user.username,
+            realname=user.realname,
+            mailingaddress=user.mailingaddress,
+            cart=cart,
+        )
+
+        db.session.add(new_order)
+        db.session.commit()
+
+        # Delete the cart after checking out.
+        session["cart"] = {}
+
+        return render_template("order_confirmation.html")
+    else:
+        return render_template("cart_empty.html")
+
+
+@app.route("/orders/", methods=["GET"])
+def orders():
+    orders = Order.query.all()
+    grouped_orders = defaultdict(list)
+
+    for order in orders:
+        grouped_orders[order.username].append(order)  # Group the orders by the username
+    return render_template("orders.html", grouped_orders=grouped_orders)

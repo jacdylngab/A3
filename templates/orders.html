@@ -1,0 +1,28 @@
+{% from "user_macros.html" import user_head %}
+<!doctype html>
+<html>
+  <head>
+    {{user_head("Orders")}}
+  </head>
+
+  <body>
+    <h1>CONGO</h1>
+    <h2>Orders</h2>
+
+    {% for username, user_orders in grouped_orders.items() %}
+    <li>
+      {{ username }} - {{ user_orders[0].realname }} - {{
+      user_orders[0].mailingaddress }}
+    </li>
+    <ul>
+      {% for order in user_orders %} {% for item, details in order.cart.items()
+      %}
+      <li>
+        {{ item }} - ${{ details["price"]}} (<strong>Quantity:</strong> {{
+        details["quantity"] }})
+      </li>
+      {% endfor %} {% endfor %}
+    </ul>
+    {% endfor %}
+  </body>
+</html>
