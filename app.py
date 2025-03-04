@@ -190,7 +190,30 @@ def remove_item_from_cart():
 
     return redirect(url_for("show_cart"))
 
-
 @app.route("/checkout/", methods=["GET"])
-def checkout_page():
-    return "IMPLEMENT ME!! I AM THE CHECKOUT PAGE!"
+def show_checkout():
+
+    cart = session.get("cart", {})
+    user = User.query.filter_by(username=session["username"]).first()
+    total_price = 0
+    if cart:
+        total_price = sum(details["price"] * details["quantity"] for details in cart.values())
+
+        # Store checkout details in session
+        session["orders"] = {
+            "realname": user.realname,
+            "mailingaddress": user.mailingaddress,
+            "cart": cart,
+        }
+        session["cart"] = {}
+        return render_template("checkout.html", cart=cart, total=round(total_price, 2), user=user)
+    else:
+        return "your cart is empty"
+@app.route("/checkout/", methods=["POST"])
+
+
+def complete_checkout():
+    #if "username" not in session:
+     #return redirect(url_for("login_form"))
+
+    return "Your Package is on it's way"
