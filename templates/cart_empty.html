@@ -1,0 +1,17 @@
+{% from "user_macros.html" import user_head, menu_buttons %}
+
+<!doctype html>
+<html>
+  <head>
+    {{ user_head("Cart Empty") }} {{ menu_buttons() }}
+  </head>
+
+  <body>
+    <h1>CONGO</h1>
+    <h2>Your Cart is Empty</h2>
+
+    <p>Looks like you haven’t added anything to your cart yet.</p>
+
+    <a href="/">Continue Shopping</a>
+  </body>
+</html>

@@ -208,7 +208,7 @@ def show_checkout():
         session["cart"] = {}
         return render_template("checkout.html", cart=cart, total=round(total_price, 2), user=user)
     else:
-        return "your cart is empty"
+        return render_template("cart_empty.html")
 @app.route("/checkout/", methods=["POST"])
 
 
@@ -216,4 +216,4 @@ def complete_checkout():
     #if "username" not in session:
      #return redirect(url_for("login_form"))
 
-    return "Your Package is on it's way"
+    return render_template("order_confirmation.html")
