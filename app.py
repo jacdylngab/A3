@@ -240,6 +240,8 @@ def complete_checkout():
 
 @app.route("/orders/", methods=["GET"])
 def orders():
+    # TODO: There is some random stuff that happens when I try to go back to the previous page when I am on the orders page.
+    # Ask about me!!
     orders = Order.query.all()
     grouped_orders = defaultdict(list)
 
