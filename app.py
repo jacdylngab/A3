@@ -42,6 +42,18 @@ def check_login():
         return redirect(url_for("login_form"))
 
 
+# I learned this from ChatGPT. I was having an issue where whenever I pressed
+# the back button, it was using the cached version and not the up-to-date version.
+# This function ensures that the browser does not cache responses and always
+# fetches fresh data when navigating back or refreshing the page.
+@app.after_request
+def add_no_cache_headers(response):
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
+
+
 @app.route("/")
 def index():
     return redirect(url_for("show_items"))
@@ -154,7 +166,10 @@ def show_cart():
 
         total = round(total, 2)  # Round to two decimal places
 
-    return render_template("show_cart.html", cart=cart, total=total)
+        return render_template("show_cart.html", cart=cart, total=total)
+
+    else:
+        return render_template("cart_empty.html")
 
 
 @app.route("/logout/", methods=["GET"])
@@ -230,6 +245,15 @@ def complete_checkout():
         db.session.add(new_order)
         db.session.commit()
 
+        return redirect(url_for("order_confirmation"))
+    else:
+        return render_template("cart_empty.html")
+
+
+@app.route("/orders-confirmation/", methods=["GET"])
+def order_confirmation():
+    cart = session.get("cart", {})
+    if cart:
         # Delete the cart after checking out.
         session["cart"] = {}
 
@@ -240,8 +264,6 @@ def complete_checkout():
 
 @app.route("/orders/", methods=["GET"])
 def orders():
-    # TODO: There is some random stuff that happens when I try to go back to the previous page when I am on the orders page.
-    # Ask about me!!
     orders = Order.query.all()
     grouped_orders = defaultdict(list)
 
