@@ -1,0 +1,18 @@
+{% macro navbar_css() %}
+<link href="{{ url_for('static', filename='css/nav.css') }}" rel="stylesheet">
+{% endmacro %}
+
+{% macro navbar() %}
+  <nav class="nav-container">
+      <span class="nav-item"><a href="{{ url_for('show_items') }}">Shop</a></span>
+      <span class="nav-item"><a href="{{ url_for('show_cart') }}">Cart</a></span>
+
+      {% if "username" in session %}
+          <span class="nav-item"><a href="{{ url_for('show_user_detail') }}">{{ session["username"] }}</a></span>
+          <span class="nav-item"><a href="{{ url_for('logout') }}">Logout</a></span>
+      {% else %}
+          <span class="nav-item"><a href="{{ url_for('login_form') }}">Login</a></span>
+          <span class="nav-item"><a href="{{ url_for('register_form') }}">Register</a></span>
+      {% endif %}
+  </nav>
+{% endmacro %}

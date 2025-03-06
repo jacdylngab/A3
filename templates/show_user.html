@@ -1,20 +1,18 @@
-{% from "user_macros.html" import user_head, menu_buttons %}
 
-<!doctype html>
-<html>
-  <head>
-    {{user_head("User Information for " + user.username)}} {{menu_buttons()}}
-  </head>
+{% extends "base.html" %}
+{% block title %}User Information{% endblock %}
 
-  <body>
+{% block content %}
     <h1>CONGO</h1>
 
     <h2>User Information</h2>
 
-    <strong>Username:</strong> {{user.username}}<br />
-    <strong>Real name:</strong> {{user.realname}}<br />
-    <strong>Email:</strong> {{user.email}}<br />
-    <strong>Mailing Address: </strong> {{user.mailingaddress}}<br />
-    <strong>Credit Card: </strong> {{user.creditcard}}
-  </body>
-</html>
+    <strong>Username:</strong> {{ user.username }}<br />
+    <strong>Real Name:</strong> {{ user.realname }}<br />
+    <strong>Email:</strong> {{ user.email }}<br />
+    <strong>Mailing Address:</strong> {{ user.mailingaddress }}<br />
+    <strong>Credit Card:</strong> {{ user.creditcard }}<br />
+
+    <br>
+    <a href="{{ url_for('show_items') }}">Back to Shopping</a>
+{% endblock %}

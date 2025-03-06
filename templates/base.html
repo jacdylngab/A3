@@ -1,0 +1,23 @@
+{% from "navbar_macros.html" import navbar %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Congo - {% block title %}Home{% endblock %}</title>
+    <link href="{{ url_for('static', filename='css/site.css') }}" rel="stylesheet">
+</head>
+<body class="{% block body_class %}default-page{% endblock %}">
+
+    {% if body_class != "login_form" %}  
+        {{ navbar() }}  
+    {% endif %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Congo. All rights reserved.</p>
+    </footer>
+</body>
+</html>

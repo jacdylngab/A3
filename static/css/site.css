@@ -1,36 +1,130 @@
+/* General Styling */
 body {
-  background-color: lightgrey;
+  background-color: #f8f9fa;
+  color: #333;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
-a {
-  font-size: 15pt;
+/* Navbar Styling */
+.nav-container {
+  background-color: #343a40; /* Dark Gray */
+  padding: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  border-bottom: 3px solid #007bff; /* Blue highlight */
 }
 
-h1 {
-  font-size: 40pt;
-  color: red;
+.nav-item {
+  padding: 8px 15px;
+  background-color: #007bff; /* Blue */
+  border-radius: 5px;
+  transition: all 0.2s ease-in-out;
+}
+
+.nav-item a {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Hover Effect */
+.nav-item:hover {
+  background-color: #0056b3; /* Darker Blue */
+  transform: scale(1.1);
+}
+
+/* Main Content Styling */
+main {
+  padding: 20px;
   text-align: center;
 }
 
-h2 {
-  font-size: 32pt;
-  color: green;
+/* Forms */
+form {
+  background: white;
+  padding: 20px;
+  width: 50%;
+  margin: 20px auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+form input, form label {
+  display: block;
+  margin: 10px auto;
+  width: 90%;
+  padding: 8px;
+  font-size: 14pt;
+}
+
+/* Buttons */
+button, input[type="submit"] {
+  background-color: #007bff; /* Blue */
+  color: white;
+  padding: 10px 20px;
+  font-size: 14pt;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: inline-block;
+}
+
+button:hover, input[type="submit"]:hover {
+  background-color: #0056b3; /* Darker blue */
+}
+
+
+/* Footer Styling */
+footer {
   text-align: center;
+  padding: 2px; /* Reduce padding */
+  font-size: 12px; /* Make text smaller */
+  background-color: #343a40;
+  color: white;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
 
-button {
-  background-color: blue;
-  color: white;
-  padding: 10pt 15pt;
-  font-size: 16pt;
-  border-radius: 5pt;
-  margin-right: 5pt;
+img {
+  max-width: 300px; /* Adjust as needed */
+  height: auto;
+  display: block;
+  margin: 10px auto; /* Center images */
 }
 
-input[type="submit"] {
-  background-color: blue;
-  color: white;
-  padding: 10pt 15pt;
-  font-size: 16pt;
-  border-radius: 5pt;
+/* Style for product containers */
+.item-container {
+  text-align: center; /* Center image and text */
+  margin-bottom: 30px; /* Increased spacing between items */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Ensure everything is centered */
+}
+
+/* Ensure links are always below images */
+.item-container img {
+  max-width: 250px; /* Keep images smaller */
+  height: auto;
+  display: block;
+  margin: 10px auto;
+}
+
+/* Style product links */
+.item-container a {
+  display: block;
+  font-size: 18px; /* Slightly larger text */
+  font-weight: bold;
+  color: #007bff; /* Blue */
+  text-decoration: none;
+  margin-top: 10px; /* Ensure gap between image and link */
+}
+
+.item-container a:hover {
+  text-decoration: underline;
 }

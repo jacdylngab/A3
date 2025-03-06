@@ -1,28 +1,22 @@
-{% from "user_macros.html" import user_head, menu_buttons %}
+{% extends "base.html" %}
+{% block title %}Checkout{% endblock %}
 
-<!doctype html>
-<html>
-  <head>
-    {{ user_head("Checkout") }} {{ menu_buttons() }}
-  </head>
-
-  <body>
+{% block content %}
     <h1>CONGO</h1>
     <h2>Checkout</h2>
 
     <p><strong>Shipping to:</strong> {{ user.realname }}, {{ user.mailingaddress }}</p>
 
     {% for item, details in cart.items() %}
-      <p>{{ item }} - <strong>Quantity:</strong> {{ details.quantity }}</p>
+        <p>{{ item }} - <strong>Quantity:</strong> {{ details.quantity }}</p>
     {% endfor %}
 
-    <h3>Total = {{ total }}</h3>
+    <h3>Total = ${{ total }}</h3>
 
     <form method="POST" action="{{ url_for('complete_checkout') }}">
-      <input type="submit" value="Complete Checkout" />
+        <input type="submit" value="Complete Checkout">
     </form>
 
-    <br />
-    <a href="/">Continue Shopping</a>
-  </body>
-</html>
+    <br>
+    <a href="{{ url_for('show_items') }}">Continue Shopping</a>
+{% endblock %}

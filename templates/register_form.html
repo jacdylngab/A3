@@ -1,12 +1,8 @@
-{% from "user_macros.html" import user_head %}
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% block body_class %}auth-page{% endblock %}
 
-<!doctype html>
-<html>
-  <head>
-    {{user_head("Register")}}
-  </head>
-
-  <body>
+{% block content %}
     <h1>CONGO</h1>
     <h2>Register a New User</h2>
     {% if message %}
@@ -17,10 +13,8 @@
       Real Name: <input name="realname" type="text" /><br />
       Email: <input name="email" type="email" /><br />
       Mailing Address: <input name="mailingaddress" type="text" /><br />
-      Credit Card:
-      <input name="creditcard" type="text" maxlength="20" /><br />
+      Credit Card: <input name="creditcard" type="text" maxlength="20" /><br />
       Password: <input name="password" type="password" /><br />
       <input type="submit" value="Register" />
     </form>
-  </body>
-</html>
+{% endblock %}

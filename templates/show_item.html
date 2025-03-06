@@ -1,23 +1,17 @@
-{% from "user_macros.html" import user_head, menu_buttons %}
+{% extends "base.html" %}
+{% block title %}Item Information{% endblock %}
 
-<!doctype html>
-<html>
-  <head>
-    {{user_head("Item Information for " + item.name)}} {{menu_buttons()}}
-  </head>
-
-  <body>
+{% block content %}
     <h1>CONGO</h1>
 
     <h2>Item Information</h2>
     <img src="/static/img/{{ item.prod_image }}" /><br />
     <strong>Item:</strong> {{ item.name }}<br />
-    <strong>Description:</strong>
-    {{ item.description }}<br />
+    <strong>Description:</strong> {{ item.description }}<br />
     <strong>Price:</strong> ${{ item.price }}<br />
+    
     <form method="POST" action="{{ url_for('add_item_to_cart') }}">
       <input name="item" type="hidden" value="{{ item.id }}" />
       <input type="submit" value="Add to cart" />
     </form>
-  </body>
-</html>
+{% endblock %}

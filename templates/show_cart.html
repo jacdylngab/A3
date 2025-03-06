@@ -1,26 +1,23 @@
-{% from "user_macros.html" import user_head, menu_buttons %}
+{% extends "base.html" %}
+{% block title %}Shopping Cart{% endblock %}
 
-<!doctype html>
-<html>
-  <head>
-    {{user_head("Shopping Cart")}} {{menu_buttons()}}
-  </head>
-
-  <body>
-    <h1>CONGO</h1>
+{% block content %}
     <h2>Shopping Cart</h2>
 
-    {% for item, details in cart.items() %} {{ item }} -
-    <strong>Quantity:</strong> {{ details.quantity }}
+    {% for item, details in cart.items() %}
+        <p>{{ item }} - <strong>Quantity:</strong> {{ details.quantity }} - 
+        <strong>Price per unit:</strong> ${{ details.price }} - 
+        <strong>Total:</strong> ${{ details.quantity * details.price }}</p>
 
-    <form method="POST" action="{{ url_for('remove_item_from_cart') }}">
-      <input name="item-name" type="hidden" value="{{ item }}" />
-      <input type="submit" value="Delete" />
-    </form>
+        <form method="POST" action="{{ url_for('remove_item_from_cart') }}">
+            <input name="item-name" type="hidden" value="{{ item }}">
+            <input type="submit" value="Remove">
+        </form>
     {% endfor %}
-    <a href="/">Continue Shopping</a><br />
-    <a href="/checkout/">Checkout</a><br />
 
-    <h3>Total = {{ total }}</h3>
-  </body>
-</html>
+    <h3>Cart Total: ${{ total }}</h3>
+
+    <a href="{{ url_for('show_items') }}">Continue Shopping</a>
+    <br>
+    <a href="{{ url_for('show_checkout') }}">Proceed to Checkout</a>
+{% endblock %}

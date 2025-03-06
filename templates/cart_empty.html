@@ -1,17 +1,9 @@
-{% from "user_macros.html" import user_head %}
+{% extends "base.html" %}
+{% block title %}Cart Empty{% endblock %}
 
-<!doctype html>
-<html>
-  <head>
-    {{ user_head("Cart Empty") }}
-  </head>
-
-  <body>
-    <h1>CONGO</h1>
+{% block content %}
     <h2>Your Cart is Empty</h2>
-
     <p>Looks like you haven’t added anything to your cart yet.</p>
 
-    <a href="/">Continue Shopping</a>
-  </body>
-</html>
+    <a href="{{ url_for('show_items') }}">Continue Shopping</a>
+{% endblock %}

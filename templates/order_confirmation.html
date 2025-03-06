@@ -1,17 +1,9 @@
-{% from "user_macros.html" import user_head, menu_buttons %}
+{% extends "base.html" %}
+{% block title %}Order Confirmed{% endblock %}
 
-<!doctype html>
-<html>
-  <head>
-    {{ user_head("Order Confirmed") }} {{ menu_buttons() }}
-  </head>
-
-  <body>
-    <h1>CONGO</h1>
+{% block content %}
     <h2>Thank You for Your Order!</h2>
-
     <p>Your package is on its way.</p>
 
-    <a href="/">Continue Shopping</a>
-  </body>
-</html>
+    <a href="{{ url_for('show_items') }}">Continue Shopping</a>
+{% endblock %}

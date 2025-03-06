@@ -1,28 +1,32 @@
-{% from "user_macros.html" import user_head %}
-<!doctype html>
-<html>
-  <head>
-    {{user_head("Orders")}}
-  </head>
+{% extends "base.html" %}
+{% block title %}Orders{% endblock %}
 
-  <body>
+{% block content %}
     <h1>CONGO</h1>
     <h2>Orders</h2>
 
-    {% for username, user_orders in grouped_orders.items() %}
-    <li>
-      {{ username }} - {{ user_orders[0].realname }} - {{
-      user_orders[0].mailingaddress }}
-    </li>
-    <ul>
-      {% for order in user_orders %} {% for item, details in order.cart.items()
-      %}
-      <li>
-        {{ item }} - ${{ details["price"]}} (<strong>Quantity:</strong> {{
-        details["quantity"] }})
-      </li>
-      {% endfor %} {% endfor %}
-    </ul>
-    {% endfor %}
-  </body>
-</html>
+    {% if grouped_orders %}
+        {% for username, user_orders in grouped_orders.items() %}
+            <div class="order-container">
+                <h3>User: {{ username }} ({{ user_orders[0].realname }})</h3>
+                <p><strong>Shipping Address:</strong> {{ user_orders[0].mailingaddress }}</p>
+
+                <ul>
+                    {% for order in user_orders %}
+                        {% for item, details in order.cart.items() %}
+                            <li>
+                                <strong>{{ item }}</strong> - ${{ details["price"] }}  
+                                (<strong>Quantity:</strong> {{ details["quantity"] }})
+                            </li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No orders have been placed yet.</p>
+    {% endif %}
+
+    <br>
+    <a href="{{ url_for('show_items') }}">Back to Shopping</a>
+{% endblock %}

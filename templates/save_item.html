@@ -1,23 +1,30 @@
-{% from "user_macros.html" import user_head %}
+{% extends "base.html" %}
+{% block title %}Add Item{% endblock %}
 
-<!doctype html>
-<html>
-  <head>
-    {{user_head("Add Item")}}
-  </head>
-
-  <body>
+{% block content %}
     <h1>CONGO</h1>
-    <h2>Add an item to the Database</h2>
+    <h2>Add an Item to the Database</h2>
+
     {% if message %}
-    <p style="color: red">{{ message }}</p>
+        <p style="color: red">{{ message }}</p>
     {% endif %}
+
     <form method="POST" action="{{ url_for('save_item') }}">
-      Product Name: <input name="name" type="text" /><br />
-      Product Description: <input name="description" type="text" /><br />
-      Product Price: <input name="price" type="number" step="0.01" /><br />
-      Product Image: <input name="img" type="text" /><br />
-      <input type="submit" value="Save" />
+        <label for="name">Product Name:</label>
+        <input id="name" name="name" type="text" required /><br />
+
+        <label for="description">Product Description:</label>
+        <input id="description" name="description" type="text" required /><br />
+
+        <label for="price">Product Price:</label>
+        <input id="price" name="price" type="number" step="0.01" required /><br />
+
+        <label for="img">Product Image Filename:</label>
+        <input id="img" name="img" type="text" required /><br />
+
+        <input type="submit" value="Save Item" />
     </form>
-  </body>
-</html>
+
+    <br>
+    <a href="{{ url_for('show_items') }}">Back to Shopping</a>
+{% endblock %}
