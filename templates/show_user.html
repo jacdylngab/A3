@@ -1,18 +1,44 @@
-
 {% extends "base.html" %}
 {% block title %}User Information{% endblock %}
 
 {% block content %}
-    <h1>CONGO</h1>
-
-    <h2>User Information</h2>
-
-    <strong>Username:</strong> {{ user.username }}<br />
-    <strong>Real Name:</strong> {{ user.realname }}<br />
-    <strong>Email:</strong> {{ user.email }}<br />
-    <strong>Mailing Address:</strong> {{ user.mailingaddress }}<br />
-    <strong>Credit Card:</strong> {{ user.creditcard }}<br />
-
-    <br>
-    <a href="{{ url_for('show_items') }}">Back to Shopping</a>
+  <div class="container mt-5">
+    <h1 class="text-center text-primary fw-bold">User Information</h1>
+    
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card shadow-lg border-0 rounded-4">
+          <div class="card-body p-4">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <i class="bi bi-person-fill text-primary"></i>
+                <strong>Username:</strong> {{ user.username }}
+              </li>
+              <li class="list-group-item">
+                <i class="bi bi-person-circle text-success"></i>
+                <strong>Real Name:</strong> {{ user.realname }}<br />
+              </li>
+              <li class="list-group-item">
+                <i class="bi bi-envelope-fill text-danger"></i>
+                <strong>Email:</strong> {{ user.email }}<br />
+              </li>
+              <li class="list-group-item">
+                <i class="bi bi-geo-alt-fill text-info"></i>
+                <strong>Mailing Address:</strong> {{ user.mailingaddress }}<br />
+              </li>
+              <li class="list-group-item">
+                <i class="bi bi-credit-card-fill text-info"></i>
+                <strong>Credit Card:</strong> {{ user.creditcard }}<br />
+              </li>
+            </ul>
+          </div>
+          <div class="card-footer text-center">
+            <a href="{{ url_for('show_items') }}" class="btn btn-outline-secondary btn-lg">
+              <i class="bi bi-cart"></i>Back to Shopping
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

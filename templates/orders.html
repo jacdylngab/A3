@@ -2,30 +2,61 @@
 {% block title %}Orders{% endblock %}
 
 {% block content %}
-    <h2>Orders</h2>
+<div class="container mt-4">
+    <h1 class="text-primary text-center">Orders</h1>
 
     {% if grouped_orders %}
-        {% for username, user_orders in grouped_orders.items() %}
-            <div class="order-container">
-                <h3>User: {{ username }} ({{ user_orders[0].realname }})</h3>
-                <p><strong>Shipping Address:</strong> {{ user_orders[0].mailingaddress }}</p>
-
-                <ul>
-                    {% for order in user_orders %}
-                        {% for item, details in order.cart.items() %}
-                            <li>
-                                <strong>{{ item }}</strong> - ${{ details["price"] }}  
-                                (<strong>Quantity:</strong> {{ details["quantity"] }})
-                            </li>
-                        {% endfor %}
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endfor %}
+        <div class="accordion mt-3" id="ordersAccordion">
+            {% for username, user_orders in grouped_orders.items() %}
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-{{ username }}">
+                        <button class="accordion-button {% if loop.index != 1 %}collapsed{% endif %}"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapse-{{ username }}"
+                                aria-expanded="{% if loop.index == 1 %}true{% else %}false{% endif %}"
+                                aria-controls="collapse-{{ username }}">
+                            <strong>{{ username }} ({{ user_orders[0].realname }})</strong>
+                        </button>
+                    </h2>
+                    <div id="collapse-{{ username }}"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="heading-{{ username }}">
+                        <div class="accordion-body">
+                            <p><strong>Shipping Address:</strong> {{ user_orders[0].mailingaddress }}</p>
+                            <div class="list-group">
+                                {% for order in user_orders %}
+                                    {% for item, details in order.cart.items() %}
+                                        <div class="list-group-item">
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    <h5 class="mb-1">{{ item }}</h5>
+                                                    <p class="mb-0 text-muted">
+                                                        Price: <strong>${{ details["price"] }}</strong>  
+                                                        | Quantity: <strong>{{ details["quantity"] }}</strong>
+                                                    </p>
+                                                </div>
+                                                <span class="badge bg-success align-self-center">${{ details["price"] * details["quantity"] }}</span>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div> 
     {% else %}
-        <p>No orders have been placed yet.</p>
+        <div class="alert alert-warning text-center mt-4">
+            <p>No orders have been placed yet.</p>
+        </div>
     {% endif %}
 
-    <br>
-    <a href="{{ url_for('show_items') }}">Back to Shopping</a>
+    <div class="text-center mt-4">
+        <a href="{{ url_for('show_items') }}" class="btn btn-outline-secondary btn-lg">
+            <i class="bi bi-cart"></i> Back to Shopping
+        </a>
+    </div>
+</div>
 {% endblock %}
