@@ -1,4 +1,3 @@
-
 {% from "navbar_macros.html" import navbar %}
 
 <!DOCTYPE html>
@@ -10,7 +9,7 @@
 </head>
 <body>
 
-    {% if request.endpoint not in ["login_form", "register_form"] %}  
+    {% if request.endpoint not in ["login_form", "register_form"] and "username" in session %}  
         {{ navbar() }}  
     {% endif %}
 

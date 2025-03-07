@@ -2,8 +2,20 @@
 {% block title %}Order Confirmed{% endblock %}
 
 {% block content %}
-    <h2>Thank You for Your Order!</h2>
-    <p>Your package is on its way.</p>
+<div class="container text-center mt-5">
+    <h2 class="text-center text-primary fw-bold">Thank You for Your Order! 🎉</h2>
+    <p class="lead">Your package is on its way. Get ready! 🚀</p>
 
-    <a href="{{ url_for('show_items') }}">Continue Shopping</a>
+    <!--Rocket Animation -->
+    <div class="rocket-confetti">
+      {% for _ in range(100) %}
+      <img src="{{ url_for('static', filename='img/rocketship.png') }}" class="rocket" alt="Rocket">
+      {% endfor %}
+    </div>
+
+    <!--Continue Shopping Button -->
+    <a href="{{ url_for('show_items') }}" class="btn btn-outline-secondary btn-lg">
+        <i class="bi bi-cart"></li>Continue Shopping
+    </a>
+  </div>
 {% endblock %}

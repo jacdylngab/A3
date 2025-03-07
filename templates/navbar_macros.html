@@ -1,14 +1,16 @@
 {% macro navbar() %}
-  <nav class="nav-container d-flex justify-content-center gap-3 py-3 bg-dark">
-      <a href="{{ url_for('show_items') }}" class="btn btn-primary">Shop</a>
-      <a href="{{ url_for('show_cart') }}" class="btn btn-primary">Cart</a>
+<nav class="nav-container d-flex justify-content-center gap-3 py-3 bg-dark">
+  <a href="{{ url_for('show_items') }}" class="btn btn-primary">Shop</a>
+  <a href="{{ url_for('show_cart') }}" class="btn btn-primary">Cart</a>
 
-      {% if "username" in session %}
-          <a href="{{ url_for('show_user_detail') }}" class="btn btn-primary">{{ session["username"] }}</a>
-          <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
-      {% else %}
-          <a href="{{ url_for('login_form') }}" class="btn btn-success">Login</a>
-          <a href="{{ url_for('register_form') }}" class="btn btn-warning">Register</a>
-      {% endif %}
-  </nav>
+  {% if "username" in session %}
+  <a href="{{ url_for('show_user_detail') }}" class="btn btn-primary"
+    >{{ session["username"] }}</a
+  >
+  <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+  {% else %}
+  <a href="{{ url_for('login_form') }}" class="btn btn-success">Login</a>
+  <a href="{{ url_for('register_form') }}" class="btn btn-warning">Register</a>
+  {% endif %}
+</nav>
 {% endmacro %}

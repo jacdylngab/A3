@@ -2,21 +2,55 @@
 {% block title %}Checkout{% endblock %}
 
 {% block content %}
-    <h1>CONGO</h1>
-    <h2>Checkout</h2>
+    <div class="container mt-4">
+      <h2 class="text-primary text-center fw-bold">Checkout</h2>
 
-    <p><strong>Shipping to:</strong> {{ user.realname }}, {{ user.mailingaddress }}</p>
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="card shadow-lg p-4">
+            <div class="card-body">
 
-    {% for item, details in cart.items() %}
-        <p>{{ item }} - <strong>Quantity:</strong> {{ details.quantity }}</p>
-    {% endfor %}
+              <!--Shipping Details -->
+              <h4 class="fw-bold">Shipping Information</h4>
 
-    <h3>Total = ${{ total }}</h3>
+              <p><strong>Name:</strong> {{ user.realname }}</p>
+              <p><strong>Address:</strong> {{ user.mailingaddress }}</p>
+              
+              <hr>
 
-    <form method="POST" action="{{ url_for('complete_checkout') }}">
-        <input type="submit" value="Complete Checkout">
-    </form>
+              <!--Payment Details -->
+              <h4 class="fw-bold">Payment Method</h4>
+              <p><strong>Credit Card:</strong> {{ user.creditcard }}</p>
 
-    <br>
-    <a href="{{ url_for('show_items') }}">Continue Shopping</a>
+              <hr>
+
+              <!--Order Summary-->
+              <h4 class="fw-bold">Order Summary</h4>
+              <ul class="list-group mb-3">
+                {% for item, details in cart.items() %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <span>{{ item }}</span>
+                  <span class="badge bg-secondary rounded-pill">x{{ details.quantity }}</span>
+                </li>
+                {% endfor %}
+              </ul>
+
+              <!--Total Price -->
+              <h3 class="text-end text-success fw-bold mb-4">Total: ${{ total }}</h3>
+
+              <!--Checkout Button -->
+              <form method="POST" action="{{ url_for('complete_checkout') }}">
+                  <button type="submit" class="btn btn-primary btn-lg w-100"> 
+                    <i class="bi bi-lock"></i>Complete Purchase
+                  </button>
+              </form>
+
+              <div class="text-center mt-3">
+                <a href="{{ url_for('show_items') }}" class="btn btn-outline-secondary">Continue Shopping</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 {% endblock %}

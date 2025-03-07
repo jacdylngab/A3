@@ -2,8 +2,21 @@
 {% block title %}Cart Empty{% endblock %}
 
 {% block content %}
-    <h2>Your Cart is Empty</h2>
-    <p>Looks like you haven’t added anything to your cart yet.</p>
+    <div class="container text-center mt-5">
+      <div class="empty-cart-icon mb-3">
+        <i class="bi bi-cart-x display-1 text-danger"></i>
+      </div>
 
-    <a href="{{ url_for('show_items') }}">Continue Shopping</a>
+      <h2 class="text-primary fw-bold">Oops! Your Cart is Empty</h2>
+      <p class="lead text-muted">Looks like you haven’t added anything to your cart yet.</p>
+
+      <div class="cart-animation">
+        <img src="{{ url_for('static', filename='img/shoppingcart.png') }}" class="animated-cart" alt="Shopping">
+      </div>
+
+    <!-- Continue Shopping Button -->
+      <a href="{{ url_for('show_items') }}" class="btn btn-outline-secondary btn-lg">
+          <i class="bi bi-bag-plus"></i> Start Shopping
+      </a>
+    </div>
 {% endblock %}
