@@ -40,6 +40,7 @@
                 class="form-control form-control-md"
                 required
               />
+              <small class="text-muted">Enter a valid email (e.g., name@example.com).</small>
             </div>
             <div class="mb-2">
               <label for="mailingaddress" class="form-label"
@@ -59,10 +60,13 @@
                 type="text"
                 id="creditcard"
                 name="creditcard"
-                maxlength="20"
+                maxlength="19"
                 class="form-control form-control-md"
-                required
+                required 
+                pattern="[0-9]{13,19}"
+                oninput="this.value = this.value.replace(/\D/g, '')"
               />
+              <small class="text-muted">Enter a valid credit card number (13-19 digits).</small>
             </div>
             <div class="mb-2">
               <label for="password" class="form-label">Password</label>

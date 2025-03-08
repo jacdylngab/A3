@@ -11,6 +11,7 @@ from flask import (
 from flask_sqlalchemy import SQLAlchemy
 import os
 from collections import defaultdict
+import re
 
 app = Flask(__name__)
 app.secret_key = "REPLACE_ME_WITH_RANDOM_CHARACTERS"
@@ -77,6 +78,15 @@ def create_user():
 
     if existing_user:
         return render_template("register_form.html", message="user already exists")
+
+    # Ensure the credit card is a number and has valid length.
+    # We learned how to do this using regular expressions from ChatGPT
+    if not re.fullmatch(r"\d{13,19}", creditcard):
+        return render_template(
+            "register_form.html",
+            message="Invalid credit card number. It must be 13-19 digits long.",
+        )
+
     new_user = User(
         username=username,
         realname=realname,
